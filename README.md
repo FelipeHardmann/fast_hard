@@ -23,6 +23,8 @@ You can install `fast_hard` via pip:
 ```bash
 pip install fast_hard
 
+fast-hard nome_do_projeto
+
 my_new_project/
 ├── app/
 │   ├── __init__.py
