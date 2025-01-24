@@ -42,7 +42,7 @@ my_new_project/
 ├── alembic.ini
 └── README.md
 
-#Running the Project
+# Running the Project
 
 cd my_new_project
 
@@ -58,3 +58,6 @@ You should see the message:
 {
   "Hello": "World"
 }
+
+# Link PyPi
+https://pypi.org/project/fast-hard/
