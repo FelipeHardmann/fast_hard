@@ -1,11 +1,8 @@
-# fast_hard/cli.py
 import click
 from pathlib import Path
 
 
-@click.command()
-@click.argument('project_name')
-def create_project(project_name):
+def initialize_project_structure(project_name):
     project_path = Path(project_name)
     project_path.mkdir(parents=True, exist_ok=True)
 
@@ -98,5 +95,81 @@ Este é um projeto FastAPI gerado automaticamente.
 
     click.echo(f"Projeto {project_name} criado com sucesso!")
 
+
+@click.group()
+def cli():
+    pass
+
+
+@cli.command(name="create_project")
+@click.argument("project_name")
+def create_project(project_name):
+    initialize_project_structure(project_name)
+
+
+@cli.command(name="create_use_cases")
+@click.argument("project_name")
+def create_use_cases(project_name):
+    project_path = Path(project_name)
+    app_path = project_path / "app"
+
+    if not app_path.exists():
+        click.echo(f"O projeto {project_name} não existe. Criando projeto...")
+        initialize_project_structure(project_name)
+
+    use_cases_path = app_path / "use_cases"
+    use_cases_path.mkdir(exist_ok=True)
+    (use_cases_path / "__init__.py").write_text("")
+
+    (use_cases_path / "example_use_case.py").write_text("""class ExampleUseCase:
+    def execute(self):
+        # Lógica do caso de uso
+        return {"message": "Caso de uso executado com sucesso!"}
+""")
+
+    click.echo(f"Estrutura de casos de uso criada em {use_cases_path}.")
+
+
+@cli.command(name="create_mvc")
+@click.argument("project_name")
+def create_mvc(project_name):
+    project_path = Path(project_name)
+    app_path = project_path / "app"
+
+    if not app_path.exists():
+        click.echo(f"O projeto {project_name} não existe. Criando projeto...")
+        initialize_project_structure(project_name)
+
+    (app_path / "controllers").mkdir(exist_ok=True)
+    (app_path / "views").mkdir(exist_ok=True)
+    (app_path / "models").mkdir(exist_ok=True)
+
+    (app_path / "controllers" / "__init__.py").write_text("")
+    (app_path / "controllers" / "example_controller.py").write_text("""from fastapi import APIRouter
+
+router = APIRouter()
+
+@router.get("/example")
+def example():
+    return {"message": "Exemplo de controller"}
+""")
+
+    (app_path / "views" / "__init__.py").write_text("")
+    (app_path / "views" / "example_view.py").write_text("""# Exemplo de view (se necessário)
+""")
+
+    (app_path / "models" / "__init__.py").write_text("")
+    (app_path / "models" / "example_model.py").write_text("""from sqlalchemy import Column, Integer, String
+from app.config.database import Base
+
+class ExampleModel(Base):
+    __tablename__ = "examples"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+""")
+
+    click.echo(f"Estrutura MVC criada em {app_path}.")
+
+
 if __name__ == "__main__":
-    create_project()
+    cli()
