@@ -2,15 +2,16 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="fast_hard",
-    version="0.1.1",
+    name="fast-hard",
+    version="0.1.2",
     packages=find_packages(),
+    include_package_data=True,
     install_requires=[
         "click",
     ],
     entry_points={
         "console_scripts": [
-            "fast-hard=fast_hard.cli:create_project",
+            "fast-hard=fast_hard.cli:cli",
         ],
     },
     author="Felipe Hardmann",
