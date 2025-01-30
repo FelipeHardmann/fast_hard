@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+sqlalchemy
+pytest
+email-validator
+alembic
